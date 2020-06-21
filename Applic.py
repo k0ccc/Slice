@@ -105,6 +105,7 @@ class Slice(QMainWindow):
         self.typeMountC.currentTextChanged.connect(self.changeForm)
         self.materialC.currentTextChanged.connect(self.materialChanged)
         self.mountingSizeC.currentTextChanged.connect(self.diametrChanged)
+        self.typeMountC.currentTextChanged.connect(self.chengeDiam)
 
     # Добавление сторик для таблицы
     @pyqtSlot()
@@ -114,11 +115,24 @@ class Slice(QMainWindow):
     # Изменинее "Диаметр резьбы" и "шаг"
     @pyqtSlot()
     def diametrChanged(self):
-        self.shagRezbiC.clear()
-        self.cursor.execute('select Shag from RezbaMetricheskayaGOST WHERE DiametrRezbi = ?' ,(self.mountingSizeC.currentText(),))
-        self.metrShagi = self.cursor.fetchall()
-        for self.metrShag  in self.metrShagi:
-            self.shagRezbiC.addItems(self.metrShag)
+        if self.typeMountC.currentText() == 'Резьбовое метрическое' or self.typeMountC.currentText() == 'Штифтовое продольное' or self.typeMountC.currentText() =='Штифтовое поперечное' or self.typeMountC.currentText() =='Призматической шпонкой' or self.typeMountC.currentText() =='Сегментной шпонкой' or self.typeMountC.currentText() =='Клиновой шпонкой' or self.typeMountC.currentText() == 'Шлицевое':
+            self.shagRezbiC.clear()
+            self.cursor.execute('select Shag from RezbaMetricheskayaGOST WHERE DiametrRezbi = ?' ,(self.mountingSizeC.currentText(),))
+            self.metrShagi = self.cursor.fetchall()
+            for self.metrShag  in self.metrShagi:
+                self.shagRezbiC.addItems(self.metrShag)
+        elif self.typeMountC.currentText() == 'Резьбовое дюймовое':
+            self.shagRezbiC.clear()
+            self.cursor.execute('select Shag from RezbaDuimovayaBoltGOST WHERE DiametrRezbi = ?' ,(self.mountingSizeC.currentText(),))
+            self.duimShagi = self.cursor.fetchall()
+            for self.duimShag  in self.duimShagi:
+                self.shagRezbiC.addItems(self.duimShag)
+        else:
+            self.shagRezbiC.clear()
+            self.cursor.execute('select Shag from DuimovayaRezbaZaklepok WHERE DiametrRezbi = ?' ,(self.mountingSizeC.currentText(),))
+            self.duimZaklShagi = self.cursor.fetchall()
+            for self.duimZaklShag  in self.duimZaklShagi:
+                self.shagRezbiC.addItems(self.duimZaklShag)
     # Подсос материала
     @pyqtSlot()
     def materialChanged(self):
@@ -147,16 +161,36 @@ class Slice(QMainWindow):
             self.diameterE.setEnabled(False)
             self.plate.setEnabled(False)
             self.plateT.setEnabled(False)
-        # if self.typeMountC.currentText() == "Резьбовое метрическое":
-        if self.typeMountC.currentText() == "Резьбовое метрическое":
-            pass
-
+    @pyqtSlot()
+    def chengeDiam(self):
+        if self.typeMountC.currentText() == 'Резьбовое метрическое' or self.typeMountC.currentText() == 'Штифтовое продольное' or self.typeMountC.currentText() =='Штифтовое поперечное' or self.typeMountC.currentText() =='Призматической шпонкой' or self.typeMountC.currentText() =='Сегментной шпонкой' or self.typeMountC.currentText() =='Клиновой шпонкой' or self.typeMountC.currentText() == 'Шлицевое':
+            print(self.typeMountC.currentText())
+            self.mountingSizeC.clear()
+            self.cursor.execute('select DiametrRezbi from RezbaMetricheskayaGOST')
+            self.changeMDiametri=self.cursor.fetchall()
+            self.sortMChangeDiametri = [el for el, _ in groupby(self.changeMDiametri)]
+            for self.sortMChangeDiametr in self.sortMChangeDiametri:
+                self.mountingSizeC.addItems(self.sortMChangeDiametr)
+        elif self.typeMountC.currentText() == 'Резьбовое дюймовое':
+            self.mountingSizeC.clear()
+            self.cursor.execute('select DiametrRezbi from RezbaDuimovayaBoltGOST')
+            self.changeDDiametri=self.cursor.fetchall()
+            self.sortDChangeDiametri = [el for el, _ in groupby(self.changeDDiametri)]
+            for self.sortDChangeDiametr in self.sortDChangeDiametri:
+                self.mountingSizeC.addItems(self.sortDChangeDiametr)
+        else:
+            self.mountingSizeC.clear()
+            self.cursor.execute('select DiametrRezbi from DuimovayaRezbaZaklepok')
+            self.duimZaklepki=self.cursor.fetchall()
+            self.sortduimZaklepki = [el for el, _ in groupby(self.duimZaklepki)]
+            for self.sortduimZaklepk in self.sortduimZaklepki:
+                self.mountingSizeC.addItems(self.sortduimZaklepk)
     @pyqtSlot()
     def raschet(self):
-        kolRow = self.plateT.rowCount()
-        if kolRow == 1:
-            i = self.plateT.item(0,0).text()
-            secCol = self.plateT.item(0,1).text()
+        # kolRow = self.plateT.rowCount()
+        # if kolRow == 1:
+        #     i = self.plateT.item(0,0).text()
+        #     secCol = self.plateT.item(0,1).text()
 
         p=self.materialsZnach
         # i =
