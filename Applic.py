@@ -22,9 +22,9 @@ class Slice(QMainWindow):
         self.diamRezbiMetr = self.cursor.fetchall()
         self.cursor.execute('select Shag from RezbaMetricheskayaGOST')
         self.shagRezbiMetr = self.cursor.fetchall()
-        self.cursor.execute('select Naprejenie from MaterialGOST WHERE MaterialGOST ="Ст2 ГОСТ 380-94"')
+        self.cursor.execute("select Naprejenie from MaterialGOST WHERE MaterialGOST ='Ст2 ГОСТ 380-94'")
         self.materialsZnach = self.cursor.fetchall()
-        # print(self.rezbiMetr)
+        self.pi = math.pi
         self.initUI()
         self.show()
 
@@ -43,8 +43,9 @@ class Slice(QMainWindow):
         self.mountingSize.setGeometry(QRect(390, 10, 250, 25))
         self.mountingSizeC = QComboBox(self.tab1)
         self.sortDiamRezbiMetr = [el for el, _ in groupby(self.diamRezbiMetr)]
-        for self.diamMetr  in self.sortDiamRezbiMetr:
-            self.mountingSizeC.addItems(self.diamMetr)
+        for diamMetr  in self.sortDiamRezbiMetr:
+            # diamMetr = str(diamMetr)
+            self.mountingSizeC.addItems(diamMetr)
         self.mountingSizeC.setGeometry(QRect(500, 10, 100, 25))
         self.shagRezbi = QLabel('Шаг',self.tab1)
         self.shagRezbi.setGeometry(QRect(660, 10, 100, 25))
@@ -78,26 +79,45 @@ class Slice(QMainWindow):
         self.plateT.resizeColumnsToContents()
         # groupBox2
         self.groupBox2 = QGroupBox("Вал", self.tab1)
-        self.groupBox2.setGeometry(QRect(390, 110, 360, 134))
+        self.groupBox2.setGeometry(QRect(390, 110, 360, 220))
         self.shaftDiameter = QLabel('Диаметр вала, мм',self.groupBox2)
         self.shaftDiameter.setGeometry(QRect(20, 25, 200, 25))
-        self.shaftDiameterC = QLineEdit('70',self.groupBox2)
-        self.shaftDiameterC.setGeometry(QRect(175, 25, 140, 25))
+        self.shaftDiameterE = QLineEdit('70',self.groupBox2)
+        self.shaftDiameterE.setGeometry(QRect(175, 25, 140, 25))
         self.torque = QLabel('Крутящий момент в H*мм',self.groupBox2)
         self.torque.setGeometry(QRect(20, 65, 200, 25))
         self.torqueC = QLineEdit('166440',self.groupBox2)
         self.torqueC.setGeometry(QRect(175, 65, 140, 25))
+        self.vistupShponki = QLabel('Выступ шпонки,мм',self.groupBox2)
+        self.vistupShponki.setGeometry(QRect(20, 105, 200, 25))
+        self.vistupShponkiE = QLineEdit('3',self.groupBox2)
+        self.vistupShponkiE.setGeometry(QRect(175, 105, 140, 25))
+        self.tolzinaShponki = QLabel('Толщина шпонки,мм', self.groupBox2)
+        self.tolzinaShponki.setGeometry(QRect(20,145,200,25))
+        self.tolzinaShponkiE = QLineEdit('10',self.groupBox2)
+        self.tolzinaShponkiE.setGeometry(QRect(175,145,140,25))
+        self.dlinaShponki = QLabel('Длина шпонки, мм', self.groupBox2)
+        self.dlinaShponki.setGeometry(QRect(20,185,200,25))
+        self.dlinaShponkiE = QLineEdit('40',self.groupBox2)
+        self.dlinaShponkiE.setGeometry(QRect(175,185,140,25))
+
         self.calculation = QPushButton('Расчитать',self.tab1)
-        self.calculation.setGeometry(QRect (391, 278, 100, 35))
+        self.calculation.setGeometry(QRect (505, 338, 100, 35))
         self.outputInW = QPushButton('Вывести',self.tab1)
         self.outputInW.setGeometry(QRect (391, 338, 100, 35))
         self.exitApp = QPushButton('Выход',self.tab1)
         self.exitApp.setGeometry(QRect (650, 338, 100, 35))
 
         self.shaftDiameter.setEnabled(False)
-        self.shaftDiameterC.setEnabled(False)
+        self.shaftDiameterE.setEnabled(False)
         self.torque.setEnabled(False)
         self.torqueC.setEnabled(False)
+        self.vistupShponki.setEnabled(False)
+        self.vistupShponkiE.setEnabled(False)
+        self.tolzinaShponki.setEnabled(False)
+        self.tolzinaShponkiE.setEnabled(False)
+        self.dlinaShponki.setEnabled(False)
+        self.dlinaShponkiE.setEnabled(False)
 
         self.exitApp.pressed.connect(self.exitA)
         self.plateT.activated.connect(self.plusRow)
@@ -106,6 +126,56 @@ class Slice(QMainWindow):
         self.materialC.currentTextChanged.connect(self.materialChanged)
         self.mountingSizeC.currentTextChanged.connect(self.diametrChanged)
         self.typeMountC.currentTextChanged.connect(self.chengeDiam)
+# FIX: ДОБАВИТЬ КНОПКУ ВЫВОДА:
+
+        # 2 TAB :3
+        self.tipRezania = QLabel('Тип резанья:', self.tab2)
+        self.tipRezania.setGeometry(QRect(20, 10, 291, 25))
+        self.tipRezaniaV = QLabel('2', self.tab2)
+        self.tipRezaniaV.setGeometry(QRect(170, 10, 291, 25))
+        self.kolvoKrep = QLabel('Кол-во креплений:', self.tab2)
+        self.kolvoKrep.setGeometry(QRect(20, 50, 291, 25))
+        self.kolvoKrepV = QLabel('2', self.tab2)
+        self.kolvoKrepV.setGeometry(QRect(170, 50, 291, 25))
+        self.diameterRezbi = QLabel('Диаметр отверстия:',self.tab2)
+        self.diameterRezbi.setGeometry(QRect(450, 10, 200, 25))
+        self.diameterRezbiV = QLabel('2',self.tab2)
+        self.diameterRezbiV.setGeometry(QRect(600, 10, 200, 25))
+        self.diameterShag = QLabel('Шаг:',self.tab2)
+        self.diameterShag.setGeometry(QRect(680, 10, 200, 25))
+        self.diameterShagV = QLabel('2',self.tab2)
+        self.diameterShagV.setGeometry(QRect(730, 10, 200, 25))
+        self.materialT2 = QLabel('Материал крепления:',self.tab2)
+        self.materialT2.setGeometry(QRect(450, 50, 200, 25))
+        self.materialT2V = QLabel('2',self.tab2)
+        self.materialT2V.setGeometry(QRect(600, 50, 200, 25))
+        self.chooseYDest = QLabel('2',self.tab2)
+        self.chooseYDest.setGeometry(QRect(370, 90, 200, 25))
+        # Штуки введённые
+        self.tableChoose1 = QLabel('2',self.tab2)
+        self.tableChoose1.setGeometry(QRect(20, 120, 200, 25))
+        self.tableChoose1V = QLabel('2',self.tab2)
+        self.tableChoose1V.setGeometry(QRect(300, 120, 200, 25))
+        self.tableChoose2 = QLabel('2',self.tab2)
+        self.tableChoose2.setGeometry(QRect(20, 160, 200, 25))
+        self.tableChoose2V = QLabel('2',self.tab2)
+        self.tableChoose2V.setGeometry(QRect(300, 160, 200, 25))
+        self.tableChoose3 = QLabel('2',self.tab2)
+        self.tableChoose3.setGeometry(QRect(20, 200, 200, 25))
+        self.tableChoose3V = QLabel('2',self.tab2)
+        self.tableChoose3V.setGeometry(QRect(300, 200, 200, 25))
+        self.tableChoose4 = QLabel('2',self.tab2)
+        self.tableChoose4.setGeometry(QRect(20, 240, 200, 25))
+        self.tableChoose4V = QLabel('2',self.tab2)
+        self.tableChoose4V.setGeometry(QRect(300, 240, 200, 25))
+        self.tableChoose5 = QLabel('2',self.tab2)
+        self.tableChoose5.setGeometry(QRect(20, 280, 200, 25))
+        self.tableChoose5V = QLabel('2',self.tab2)
+        self.tableChoose5V.setGeometry(QRect(300, 280, 200, 25))
+        # Формулы
+        self.tableChoose1 = QLabel('2',self.tab2)
+        self.tableChoose1.setGeometry(QRect(450, 120, 200, 25))
+
 
     # Добавление сторик для таблицы
     @pyqtSlot()
@@ -139,24 +209,35 @@ class Slice(QMainWindow):
         self.gostMaterialCombo = self.materialC.currentText()
         self.cursor.execute('select Naprejenie from MaterialGOST WHERE MaterialGOST = ?' ,(self.gostMaterialCombo,))
         self.materialsZnach = self.cursor.fetchall()
-        print (self.materialsZnach)
     # Изменение формы заглушить вал и тд
     @pyqtSlot()
     def changeForm(self):
         if self.typeMountC.currentText() == "Резьбовое метрическое"or self.typeMountC.currentText() =="Резьбовое дюймовое"or self.typeMountC.currentText() =="Заклепочное"or self.typeMountC.currentText() =="Заклепочное, с полой заклепкой"or self.typeMountC.currentText() =="Заклепочное, резьбовой заклепкой":
             self.shaftDiameter.setEnabled(False)
-            self.shaftDiameterC.setEnabled(False)
+            self.shaftDiameterE.setEnabled(False)
             self.torque.setEnabled(False)
             self.torqueC.setEnabled(False)
+            self.vistupShponki.setEnabled(False)
+            self.vistupShponkiE.setEnabled(False)
+            self.tolzinaShponki.setEnabled(False)
+            self.tolzinaShponkiE.setEnabled(False)
+            self.dlinaShponki.setEnabled(False)
+            self.dlinaShponkiE.setEnabled(False)
             self.diameter.setEnabled(True)
             self.diameterE.setEnabled(True)
             self.plate.setEnabled(True)
             self.plateT.setEnabled(True)
         else:
             self.shaftDiameter.setEnabled(True)
-            self.shaftDiameterC.setEnabled(True)
+            self.shaftDiameterE.setEnabled(True)
             self.torque.setEnabled(True)
             self.torqueC.setEnabled(True)
+            self.vistupShponki.setEnabled(True)
+            self.vistupShponkiE.setEnabled(True)
+            self.tolzinaShponki.setEnabled(True)
+            self.tolzinaShponkiE.setEnabled(True)
+            self.dlinaShponki.setEnabled(True)
+            self.dlinaShponkiE.setEnabled(True)
             self.diameter.setEnabled(False)
             self.diameterE.setEnabled(False)
             self.plate.setEnabled(False)
@@ -164,7 +245,6 @@ class Slice(QMainWindow):
     @pyqtSlot()
     def chengeDiam(self):
         if self.typeMountC.currentText() == 'Резьбовое метрическое' or self.typeMountC.currentText() == 'Штифтовое продольное' or self.typeMountC.currentText() =='Штифтовое поперечное' or self.typeMountC.currentText() =='Призматической шпонкой' or self.typeMountC.currentText() =='Сегментной шпонкой' or self.typeMountC.currentText() =='Клиновой шпонкой' or self.typeMountC.currentText() == 'Шлицевое':
-            print(self.typeMountC.currentText())
             self.mountingSizeC.clear()
             self.cursor.execute('select DiametrRezbi from RezbaMetricheskayaGOST')
             self.changeMDiametri=self.cursor.fetchall()
@@ -187,14 +267,35 @@ class Slice(QMainWindow):
                 self.mountingSizeC.addItems(self.sortduimZaklepk)
     @pyqtSlot()
     def raschet(self):
-        # kolRow = self.plateT.rowCount()
-        # if kolRow == 1:
-        #     i = self.plateT.item(0,0).text()
-        #     secCol = self.plateT.item(0,1).text()
-
-        p=self.materialsZnach
-        # i =
-        # pass
+        if self.diameterE.isEnabled():
+            # --------------------------------------------
+            p = self.materialsZnach
+            i = self.plateT.rowCount()
+            z = self.numberMountsE.text()
+            p = list(map(tuple, p))
+            p = p[0]
+            p = str(p)
+            p = p.replace(',', '')
+            p = p.replace(')','')
+            p = p.replace('(','')
+            p = int(p)
+            self.Q = (p/(int(i)*int(z)))
+            # ---------------------------------------------------
+            d = self.mountingSizeC.currentText()
+            d = d.replace(',', '.')
+            d = float(d)
+            self.Fcp = (round(int(self.pi))) *(d*d)/4
+            TcpF = self.Q/ self.Fcp
+            print(TcpF)
+        # Расчёт вала
+        else:
+            d = self.shaftDiameterE.text()
+            k = self.vistupShponkiE.text()
+            b = self.tolzinaShponkiE.text()
+            l = self.dlinaShponkiE.text()
+            M = self.torqueC.text()
+            TpcS = int(M)/((0.5*(int(d)+int(k)))*int(b)*int(l))
+            print(TpcS)
     # выход
     @pyqtSlot()
     def exitA(self):
