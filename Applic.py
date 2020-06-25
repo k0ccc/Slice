@@ -102,9 +102,9 @@ class Slice(QMainWindow):
         self.dlinaShponkiE.setGeometry(QRect(175,185,140,25))
 
         self.calculation = QPushButton('Расчитать',self.tab1)
-        self.calculation.setGeometry(QRect (505, 338, 100, 35))
+        self.calculation.setGeometry(QRect (391, 338, 100, 35))
         self.outputInW = QPushButton('Вывести',self.tab1)
-        self.outputInW.setGeometry(QRect (391, 338, 100, 35))
+        self.outputInW.setGeometry(QRect (505, 338, 100, 35))
         self.exitApp = QPushButton('Выход',self.tab1)
         self.exitApp.setGeometry(QRect (650, 338, 100, 35))
 
@@ -126,55 +126,58 @@ class Slice(QMainWindow):
         self.materialC.currentTextChanged.connect(self.materialChanged)
         self.mountingSizeC.currentTextChanged.connect(self.diametrChanged)
         self.typeMountC.currentTextChanged.connect(self.chengeDiam)
+        self.outputInW.pressed.connect(self.outWord)
 # FIX: ДОБАВИТЬ КНОПКУ ВЫВОДА:
 
         # 2 TAB :3
         self.tipRezania = QLabel('Тип резанья:', self.tab2)
         self.tipRezania.setGeometry(QRect(20, 10, 291, 25))
-        self.tipRezaniaV = QLabel('2', self.tab2)
+        self.tipRezaniaV = QLabel('', self.tab2)
         self.tipRezaniaV.setGeometry(QRect(170, 10, 291, 25))
         self.kolvoKrep = QLabel('Кол-во креплений:', self.tab2)
         self.kolvoKrep.setGeometry(QRect(20, 50, 291, 25))
-        self.kolvoKrepV = QLabel('2', self.tab2)
+        self.kolvoKrepV = QLabel('', self.tab2)
         self.kolvoKrepV.setGeometry(QRect(170, 50, 291, 25))
-        self.diameterRezbi = QLabel('Диаметр отверстия:',self.tab2)
+        self.diameterRezbi = QLabel('Диаметр резьбы:',self.tab2)
         self.diameterRezbi.setGeometry(QRect(450, 10, 200, 25))
-        self.diameterRezbiV = QLabel('2',self.tab2)
+        self.diameterRezbiV = QLabel('',self.tab2)
         self.diameterRezbiV.setGeometry(QRect(600, 10, 200, 25))
         self.diameterShag = QLabel('Шаг:',self.tab2)
         self.diameterShag.setGeometry(QRect(680, 10, 200, 25))
-        self.diameterShagV = QLabel('2',self.tab2)
+        self.diameterShagV = QLabel('',self.tab2)
         self.diameterShagV.setGeometry(QRect(730, 10, 200, 25))
         self.materialT2 = QLabel('Материал крепления:',self.tab2)
         self.materialT2.setGeometry(QRect(450, 50, 200, 25))
-        self.materialT2V = QLabel('2',self.tab2)
-        self.materialT2V.setGeometry(QRect(600, 50, 200, 25))
-        self.chooseYDest = QLabel('2',self.tab2)
-        self.chooseYDest.setGeometry(QRect(370, 90, 200, 25))
+        self.materialT2V = QLabel('',self.tab2)
+        self.materialT2V.setGeometry(QRect(620, 50, 200, 25))
+        self.chooseYDest = QLabel('',self.tab2)
+        self.chooseYDest.setGeometry(QRect(0, 90, 2000, 25))
         # Штуки введённые
-        self.tableChoose1 = QLabel('2',self.tab2)
+        self.tableChoose1 = QLabel('',self.tab2)
         self.tableChoose1.setGeometry(QRect(20, 120, 200, 25))
-        self.tableChoose1V = QLabel('2',self.tab2)
+        self.tableChoose1V = QLabel('',self.tab2)
         self.tableChoose1V.setGeometry(QRect(300, 120, 200, 25))
-        self.tableChoose2 = QLabel('2',self.tab2)
+        self.tableChoose2 = QLabel('',self.tab2)
         self.tableChoose2.setGeometry(QRect(20, 160, 200, 25))
-        self.tableChoose2V = QLabel('2',self.tab2)
+        self.tableChoose2V = QLabel('',self.tab2)
         self.tableChoose2V.setGeometry(QRect(300, 160, 200, 25))
-        self.tableChoose3 = QLabel('2',self.tab2)
+        self.tableChoose3 = QLabel('',self.tab2)
         self.tableChoose3.setGeometry(QRect(20, 200, 200, 25))
-        self.tableChoose3V = QLabel('2',self.tab2)
+        self.tableChoose3V = QLabel('',self.tab2)
         self.tableChoose3V.setGeometry(QRect(300, 200, 200, 25))
-        self.tableChoose4 = QLabel('2',self.tab2)
+        self.tableChoose4 = QLabel('',self.tab2)
         self.tableChoose4.setGeometry(QRect(20, 240, 200, 25))
-        self.tableChoose4V = QLabel('2',self.tab2)
+        self.tableChoose4V = QLabel('',self.tab2)
         self.tableChoose4V.setGeometry(QRect(300, 240, 200, 25))
-        self.tableChoose5 = QLabel('2',self.tab2)
+        self.tableChoose5 = QLabel('',self.tab2)
         self.tableChoose5.setGeometry(QRect(20, 280, 200, 25))
-        self.tableChoose5V = QLabel('2',self.tab2)
+        self.tableChoose5V = QLabel('',self.tab2)
         self.tableChoose5V.setGeometry(QRect(300, 280, 200, 25))
         # Формулы
-        self.tableChoose1 = QLabel('2',self.tab2)
-        self.tableChoose1.setGeometry(QRect(450, 120, 200, 25))
+        self.tableChooseRight1 = QLabel('Tcp =',self.tab2)
+        self.tableChooseRight1.setGeometry(QRect(450, 120, 200, 25))
+        self.tableChooseRight2 = QLabel('',self.tab2)
+        self.tableChooseRight2.setGeometry(QRect(600,120,200,25))
 
 
     # Добавление сторик для таблицы
@@ -267,6 +270,11 @@ class Slice(QMainWindow):
                 self.mountingSizeC.addItems(self.sortduimZaklepk)
     @pyqtSlot()
     def raschet(self):
+        self.tipRezaniaV.setText(self.typeMountC.currentText())
+        self.kolvoKrepV.setText(self.numberMountsE.text())
+        self.diameterRezbiV.setText(self.mountingSizeC.currentText())
+        self.diameterShagV.setText(self.shagRezbiC.currentText())
+        self.materialT2V.setText(self.materialC.currentText())
         if self.diameterE.isEnabled():
             # --------------------------------------------
             p = self.materialsZnach
@@ -281,12 +289,56 @@ class Slice(QMainWindow):
             p = int(p)
             self.Q = (p/(int(i)*int(z)))
             # ---------------------------------------------------
-            d = self.mountingSizeC.currentText()
-            d = d.replace(',', '.')
-            d = float(d)
+            try:
+                d = self.mountingSizeC.currentText()
+                d = d.replace(',', '.')
+                d = float(d)
+            except ValueError:
+                d = 10
             self.Fcp = (round(int(self.pi))) *(d*d)/4
             TcpF = self.Q/ self.Fcp
             print(TcpF)
+
+            self.chooseYDest.setText('----------------------------------------------------Для резьбового и заклепочного соединений-----------------------------------------------------------')
+            self.tableChoose1.setText('Диаметр отверстия:')
+            self.tableChoose1V.setText(self.diameterE.text())
+            self.tableChoose2.setText('Количество пластин:')
+            self.tableChoose2V.setText(str(self.plateT.rowCount()))
+            self.tableChoose3.setText('Толщина пластин:')
+            self.tableChooseRight2.setText(str(TcpF))
+            massTolz = []
+            try:
+                for i in range(self.plateT.rowCount()):
+                    massTolz.append(self.plateT.item(i, 0).text())
+                    print(massTolz)
+                    massTolzR = list(map(int, massTolz))
+                    try:
+                        massTolzRe = sum(massTolzR)
+                        print(massTolzRe)
+                        self.tableChoose3V.setText(str(massTolzRe))
+                    except TypeError:
+                        self.tableChoose3V.setText(self.plateT.item(0, 0).text())
+            except AttributeError:
+                self.tableChoose3V.setText("нет")
+
+            self.tableChoose4.setText('Поперечная сила:')
+            self.tableChoose5.setText('')
+            self.tableChoose5V.setText('')
+            poperchSila =[]
+            try:
+                for i in range(self.plateT.rowCount()):
+                    poperchSila.append(self.plateT.item(i,1).text())
+                    print(poperchSila)
+                    poperchSilaR = list(map(int, poperchSila))
+                    try:
+                        poperchSilaRe = sum(poperchSilaR)
+                        print(poperchSilaRe)
+                        self.tableChoose4V.setText(str(poperchSilaRe))
+                    except TypeError:
+                        self.tableChoose4V.setText(self.plateT.item(0,1).text())
+            except AttributeError:
+                self.tableChoose4V.setText("нет")
+
         # Расчёт вала
         else:
             d = self.shaftDiameterE.text()
@@ -296,6 +348,114 @@ class Slice(QMainWindow):
             M = self.torqueC.text()
             TpcS = int(M)/((0.5*(int(d)+int(k)))*int(b)*int(l))
             print(TpcS)
+            self.chooseYDest.setText('-----------------------------------------------------------------------Для Вала------------------------------------------------------------------------------')
+            self.tableChooseRight2.setText(str(TpcS))
+            self.tableChoose1.setText('Диаметр вала')
+            self.tableChoose2.setText('Крутящий момент')
+            self.tableChoose3.setText('Выступ шпонки')
+            self.tableChoose4.setText('Толщина шпонки')
+            self.tableChoose5.setText('Длина шпонки')
+            self.tableChoose1V.setText(self.shaftDiameterE.text())
+            self.tableChoose2V.setText(self.torqueC.text())
+            self.tableChoose3V.setText(self.vistupShponkiE.text())
+            self.tableChoose4V.setText(self.tolzinaShponkiE.text())
+            self.tableChoose5V.setText(self.dlinaShponkiE.text())
+    @pyqtSlot()
+    def outWord(self):
+        import docx
+        from docx import Document
+        document = Document()
+        document.add_heading('Расчёт на срез',0)
+        par1 = document.add_paragraph('Тип резанья:  ')
+        par1.add_run(self.typeMountC.currentText())
+        par2 = document.add_paragraph('Кол-во креплений:  ')
+        par2.add_run(self.numberMountsE.text())
+        par3 = document.add_paragraph('Диаметр резьбы:  ')
+        par3.add_run(self.mountingSizeC.currentText())
+        par4 = document.add_paragraph('Шаг:  ')
+        par4.add_run(self.shagRezbiC.currentText())
+        par5 = document.add_paragraph('Материал крепления:  ')
+        par5.add_run(self.materialC.currentText())
+        if self.diameterE.isEnabled():
+            # --------------------------------------------
+            p = self.materialsZnach
+            i = self.plateT.rowCount()
+            z = self.numberMountsE.text()
+            p = list(map(tuple, p))
+            p = p[0]
+            p = str(p)
+            p = p.replace(',', '')
+            p = p.replace(')','')
+            p = p.replace('(','')
+            p = int(p)
+            self.Q = (p/(int(i)*int(z)))
+            # ---------------------------------------------------
+            try:
+                d = self.mountingSizeC.currentText()
+                d = d.replace(',', '.')
+                d = float(d)
+            except ValueError:
+                d = 10
+            self.Fcp = (round(int(self.pi))) *(d*d)/4
+            TcpF = self.Q/ self.Fcp
+            print(TcpF)
+            document.add_paragraph('Расчёт проводился для резьбового и заклепочного соединений')
+            par6 = document.add_paragraph('Диаметр отверстия:  ')
+            par6.add_run(self.diameterE.text())
+            par7 =  document.add_paragraph('Количество пластин:  ')
+            par7.add_run(str(self.plateT.rowCount()))
+            par8 =  document.add_paragraph('Толщина пластин:  ')
+            massTolz = []
+            try:
+                for i in range(self.plateT.rowCount()):
+                    massTolz.append(self.plateT.item(i, 0).text())
+                    massTolzR = list(map(int, massTolz))
+                    try:
+                        massTolzRe = sum(massTolzR)
+                        par8.add_run(str(massTolzRe))
+                    except TypeError:
+                        par8.add_run(self.plateT.item(0, 0).text())
+            except AttributeError:
+                par8.add_run('Нет')
+            par10 = document.add_paragraph('Поперечная сила:  ')
+            poperchSila =[]
+            try:
+                for i in range(self.plateT.rowCount()):
+                    poperchSila.append(self.plateT.item(i,1).text())
+                    print(poperchSila)
+                    poperchSilaR = list(map(int, poperchSila))
+                    try:
+                        poperchSilaRe = sum(poperchSilaR)
+                        print(poperchSilaRe)
+                        par10.add_run(str(poperchSilaRe))
+                    except TypeError:
+                        par10.add_run(self.plateT.item(0,1).text())
+            except AttributeError:
+                par10.add_run("Нет")
+            par9 =  document.add_paragraph('Tcp = ')
+            par9.add_run(str(TcpF))
+        else:
+            d = self.shaftDiameterE.text()
+            k = self.vistupShponkiE.text()
+            b = self.tolzinaShponkiE.text()
+            l = self.dlinaShponkiE.text()
+            M = self.torqueC.text()
+            TpcS = int(M)/((0.5*(int(d)+int(k)))*int(b)*int(l))
+            print(TpcS)
+            document.add_paragraph('Расчёт проводился для Вала')
+            par6=document.add_paragraph('Диаметр вала:  ')
+            par7=document.add_paragraph('Крутящий момент:  ')
+            par8=document.add_paragraph('Выступ шпонки:  ')
+            par9=document.add_paragraph('Толщина шпонки:  ')
+            par10=document.add_paragraph('Длина шпонки:  ')
+            par6.add_run(self.shaftDiameterE.text())
+            par7.add_run(self.torqueC.text())
+            par8.add_run(self.vistupShponkiE.text())
+            par9.add_run(self.tolzinaShponkiE.text())
+            par10.add_run(self.dlinaShponkiE.text())
+            fin=document.add_paragraph('Tpc = ')
+            fin.add_run(str(TpcS))
+        document.save('Расчёт на срез.docx')
     # выход
     @pyqtSlot()
     def exitA(self):
